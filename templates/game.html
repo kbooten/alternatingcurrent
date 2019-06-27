@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" type="text/css" href="/static/style.css"> 
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <script language="Javascript">
+    // trying to alert mobile users
+    //https://stackoverflow.com/a/48719900 
+      window.onload=function(){
+      var mobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+      if (mobile) {
+          alert("Sorry, this doesn't work on mobile. Try again when you are at a desktop.");              
+      } else {
+
+      }
+    }
+  </script>
+  <body>
+
+    <script> 
+
+
+      function evalInput(){
+        inputPoem= $("#poem").val();
+        passAsGetRequest(inputPoem);
+        // $("#poem").val("");
+      }
+
+
+      var yvals = [];
+      var evaluated_Sents = [];
+
+      function passAsGetRequest(userInput){
+        $.get("/get", { poem: userInput}).done(function(data){
+          console.log(data);
+          $("#score").text("EMOTIONAL OSCILLATION SCORE: "+data['score']);
+          yvals = data["yvals"];
+          evaluated_Sents = data["sents"];
+          newPlot();
+        });
+      }
+
+
+
+    function newPlot(){
+
+            var trace1 = {
+              x: yvals.length,
+              y: yvals,
+              text: evaluated_Sents,
+              hoverinfo:"text",
+              type: 'scatter',
+              marker: {
+                size: 10,
+                color: '#417df4',        
+              }
+            };
+
+            var data = [trace1];
+
+            var layout = {
+              autosize:false,
+              width:600,
+              height:400,
+              showlegend:false,
+              xaxis: {
+                showgrid: false,
+                // showticklabels:false,
+                zeroline: false,
+                range: [-.1,yvals.length-.9],
+                fixedrange:true,
+              },
+              yaxis: {
+                title: 'Emotion<br><b>negative</b>                                                       <b>positive</b>',
+                // showline: false,
+                range:[-.51,.51],
+                fixedrange:true,
+                showticklabels:false,
+              },
+
+            };
+            Plotly.newPlot('plotDiv',data,layout);
+          }
+
+
+
+      $(document).ready(function(){
+        $("#tochangecolor").hover(function(){
+            $(this).css("color", "#e5f442");
+            }, function(){
+            $(this).css("color", "black");
+        });
+      });
+
+
+
+    </script>
+
+    <div id="column-left">
+      <div id="withinleft">
+      <div id="intro">Please type a poem and hit SUBMIT.  It will be evaluated by an editorial algorithm. 
+        In the perfect poem, the emotions flip back and forth, + to -, sentence to sentence (<a href="https://www.google.com/search?biw=1280&bih=699&tbm=isch&sa=1&ei=XpN0W47pFY2t_QbplLKwDA&q=alternating+current+wave&" target="_blank">alternating current</a>, high <span id="tochangecolor">volta</span>ge). Put more bluntly, MAXIMIZE THE EMOTIONAL OSCILLATION SCORE.</div>
+      <textarea id="poem" rows="20" cols="40"></textarea><br>
+      <button id="submit" onclick="evalInput()">Submit</button>
+    </div>
+      <div id="title"><span>n+=1 :</span> alternating ʇuǝɹɹnɔ</div>
+    </div>
+    <div id="column-right">
+      <div id="score"></div>
+      <div id="plotDiv"></div>
+    </div>
+      
+    </div>
+
+  </body>
+</html>
