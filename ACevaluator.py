@@ -16,7 +16,7 @@ from nltk import SklearnClassifier
 ## loading
 import pickle,json
 
-with open('maxent_model_pos_vs_neg_for_magazine.pkl','rb') as f:
+with open('maxent_model_pos_vs_neg.pkl','rb') as f:
     model = pickle.load(f)
 
 with open('top_words.json','r') as f:
