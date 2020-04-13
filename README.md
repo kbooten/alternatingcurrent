@@ -6,4 +6,6 @@ The interface desires that you write a poem that oscillates between grim and joy
 
 Part of a larger series of explorations of what it means to write in the context of computational/statistical progymnasmata.
 
+Try [here](https://nequalsnplusone.herokuapp.com/).
+
 ![alternating current interface](img/screenshot.png)
