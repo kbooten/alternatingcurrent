@@ -58,7 +58,7 @@ protobuf==3.5.2
 ptyprocess==0.5.2
 pycparser==2.18
 pyemd==0.5.1
-Pygments==2.2.0
+Pygments==2.7.4
 pyOpenSSL==18.0.0
 pyparsing==2.2.0
 PySocks==1.6.8
